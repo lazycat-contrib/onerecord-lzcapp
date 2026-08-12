@@ -1,0 +1,51 @@
+version: 1
+
+project:
+  root: .
+  build_config: lzc-build.yml
+  package_file: package.yml
+  output: dist/cloud.lazycat.app.onerecord.lpk
+  target_arch: amd64
+
+update:
+  strategy: publish
+  allow_downgrade: false
+  version_source:
+    type: git
+
+build:
+  toolchains: []
+  run_buildscript: false
+
+images:
+  - id: onerecord
+    target: service
+    service: onerecord
+    source: docker.io/onerecord/onerecord
+    channel: stable
+    sort: semver
+    tag_regex: '^v1\.0\.9$'
+    delivery:
+      mode: lazycat
+
+stores:
+  official:
+    enabled: true
+    skip_if_version_exists: true
+    create_if_missing: true
+    changelog_locales: [zh, en]
+    retry:
+      enabled: false
+      max_attempts: 3
+      initial_delay: 2s
+      max_delay: 30s
+    application:
+      language: zh
+      name: 一号录播
+      source: https://bestlive.cc
+      source_author: bestlive
+  private:
+    enabled: true
+    skip_if_version_exists: true
+    name: 一号录播
+    summary: OneRecord LazyCat package published from GitHub Actions.

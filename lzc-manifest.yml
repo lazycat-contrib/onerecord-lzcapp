@@ -1,0 +1,21 @@
+application:
+  subdomain: onerecord
+  background_task: true
+  upstreams:
+    - location: /
+      backend: http://onerecord:8080
+
+services:
+  onerecord:
+    # onerecord/onerecord:v1.0.9
+    image: registry.lazycat.cloud/czyt/onerecord/onerecord:f476af12ea2af77f
+    binds:
+      - /lzcapp/var/config:/data/feiyu-live-server/config
+      - /lzcapp/var/config/oneRecord:/root/.OneRecord
+      - /lzcapp/var/logs:/root/.feiyu/logs
+      - /lzcapp/var/config/aliyunpan:/data/feiyu-live-server/ali
+      - /lzcapp/var/config/bypy:/root/.bypy
+      - /lzcapp/var/data:/data/feiyu-live-server/data
+    environment:
+      - JVMPARAM=-Xms512m -Xmx1g
+      - ACTIVEPROFILES=pro
